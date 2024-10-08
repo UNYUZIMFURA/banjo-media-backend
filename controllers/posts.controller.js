@@ -40,4 +40,20 @@ const createPost = async (req, res) => {
   }
 };
 
-module.exports = { createPost };
+const getPosts = async (req, res) => {
+  try {
+    const posts = await prisma.post.findMany();
+    return res.status(200).json({
+      success: true,
+      message: "Posts fetched",
+      posts
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching posts",
+    });
+  }
+};
+
+module.exports = { createPost, getPosts };

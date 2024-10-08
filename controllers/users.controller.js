@@ -80,7 +80,7 @@ const getUsers = async (req, res) => {
 const deleteUsers = async (req, res) => {
   try {
     await prisma.user.deleteMany();
-    return res.status(200).json({
+    return res.status(204).json({
       success: true,
       message: "Users deleted!",
     });

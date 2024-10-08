@@ -37,7 +37,7 @@ const createUser = async (req, res) => {
     });
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email },
       process.env.JWT_SECRET
     );
 
@@ -52,6 +52,27 @@ const createUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error creating user",
+    });
+  }
+};
+
+const getUsers = async (req, res) => {
+  try {
+    const users = await prisma.user.findMany({
+      include: {
+        posts: true
+      }
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Fetched users",
+      users,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Error fetching users",
+      err
     });
   }
 };
@@ -72,4 +93,4 @@ const deleteUsers = async (req, res) => {
   }
 };
 
-module.exports = { createUser, deleteUsers };
+module.exports = { createUser, getUsers, deleteUsers };

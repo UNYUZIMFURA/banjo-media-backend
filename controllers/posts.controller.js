@@ -46,7 +46,7 @@ const getPosts = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Posts fetched",
-      posts
+      posts,
     });
   } catch (err) {
     return res.status(500).json({
@@ -56,4 +56,35 @@ const getPosts = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getPosts };
+const deletePost = async (req, res) => {
+  const postId = req.params.id;
+  try {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: postId,
+      },
+    });
+    if (!post) {
+      return res.status(400).json({
+        success: false,
+        message: "No post found",
+      });
+    }
+
+    await prisma.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+
+    return res.status(204).json({})
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Error deleting post",
+    });
+  }
+};
+
+module.exports = { createPost, getPosts, deletePost };

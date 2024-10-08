@@ -23,7 +23,7 @@ const createUser = async (req, res) => {
     if (userExists) {
       return res.status(400).json({
         success: false,
-        message: "An account with that email already exists!",
+        message: "An account with that email or username already exists!",
       });
     }
 
@@ -80,10 +80,7 @@ const getUsers = async (req, res) => {
 const deleteUsers = async (req, res) => {
   try {
     await prisma.user.deleteMany();
-    return res.status(204).json({
-      success: true,
-      message: "Users deleted!",
-    });
+    return res.status(204).json({})
   } catch (err) {
     console.log(err);
     return res.status(500).json({

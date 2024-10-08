@@ -60,8 +60,8 @@ const getUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany({
       include: {
-        posts: true
-      }
+        posts: true,
+      },
     });
     return res.status(200).json({
       success: true,
@@ -72,7 +72,7 @@ const getUsers = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error fetching users",
-      err
+      err,
     });
   }
 };

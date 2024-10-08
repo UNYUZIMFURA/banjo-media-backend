@@ -1,10 +1,10 @@
 const express = require("express");
 const cors = require("cors");
-const colors = require('colors')
+const colors = require("colors");
 const app = express();
 const dotenv = require("dotenv");
 const userRoutes = require("./routes/users.routes");
-const postRoutes = require("./routes/posts.routes")
+const postRoutes = require("./routes/posts.routes");
 const helmet = require("helmet");
 require("dotenv").config();
 dotenv.config({ path: "./env" });

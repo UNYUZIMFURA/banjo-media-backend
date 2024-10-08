@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const verifyToken = async (req, res, next) => {
-  const authorizationHeader = req.headers.authorization
+  const authorizationHeader = req.headers.authorization;
   const token = authorizationHeader && authorizationHeader.split(" ")[1];
 
   if (token == null)
@@ -18,9 +18,9 @@ const verifyToken = async (req, res, next) => {
         message: "Invalid token!",
       });
     }
-    req.user = user
-    next()
-  })
+    req.user = user;
+    next();
+  });
 };
 
 module.exports = { verifyToken };

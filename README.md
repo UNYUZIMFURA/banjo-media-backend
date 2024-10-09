@@ -1,4 +1,4 @@
-# Banjo Media Backend
+# Social Media Backend(Banjo Media)
 
 # Features
 - User Authentication(Login,Signup)

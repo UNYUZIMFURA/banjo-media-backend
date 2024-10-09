@@ -2,8 +2,8 @@
 
 # Features
 - User Authentication(Login,Signup)
-- Posts Management(Create)
-- Comments Management(Adding comments, Updating comments, Deleting comments)
+- Posts Management(Creating Posts, Viewing Posts, Updating Posts, Deleting Posts )
+- Comments Management(Adding comments, Viewing comments, Updating comments, Deleting comments)
 
 # Technologies & Tools
 - Nodejs

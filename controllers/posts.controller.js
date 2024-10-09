@@ -54,11 +54,13 @@ const getPosts = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-  const postId = req.params.id;
+  const id = req.params.id;
+  const userId = req.user.id
   try {
     const post = await prisma.post.findFirst({
       where: {
-        id: postId,
+        id,
+        userId
       },
     });
     if (!post) {
@@ -67,10 +69,9 @@ const deletePost = async (req, res) => {
         message: "No post found",
       });
     }
-
     await prisma.post.delete({
       where: {
-        id: postId,
+        id
       },
     });
 

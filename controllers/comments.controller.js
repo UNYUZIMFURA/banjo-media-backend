@@ -45,7 +45,7 @@ const getComments = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Comments fetched",
-      comments
+      comments,
     });
   } catch (err) {
     return res.status(500).json({
@@ -55,4 +55,34 @@ const getComments = async (req, res) => {
   }
 };
 
-module.exports = { addComment, getComments };
+const deleteComment = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.user.id
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id,
+        userId
+      },
+    });
+    if (!comment) {
+      return res.status(400).json({
+        success: false,
+        message: "No comment found",
+      });
+    }
+    await prisma.comment.delete({
+      where: {
+        id,
+      },
+    });
+    return res.status(204).json({});
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete comment",
+    });
+  }
+};
+
+module.exports = { addComment, getComments, deleteComment };

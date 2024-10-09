@@ -18,6 +18,7 @@ const addComment = async (req, res) => {
       message: "Provide content for your comment!",
     });
   }
+
   try {
     const comment = await prisma.comment.create({
       data: {
@@ -55,14 +56,55 @@ const getComments = async (req, res) => {
   }
 };
 
-const deleteComment = async (req, res) => {
+const updateComment = async (req, res) => {
+  const id = req.params.id;
+  const userId = req.user.id;
+  const { content } = req.body;
   try {
-    const id = req.params.id;
-    const userId = req.user.id
     const comment = await prisma.comment.findFirst({
       where: {
         id,
-        userId
+        userId,
+      },
+    });
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        message: "No comment found",
+      });
+    }
+
+    const updatedComment = await prisma.comment.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        content,
+      },
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Updated the comment",
+      updatedComment,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating comment",
+    });
+  }
+};
+
+const deleteComment = async (req, res) => {
+  const id = req.params.id;
+  const userId = req.user.id;
+  try {
+    const comment = await prisma.comment.findFirst({
+      where: {
+        id,
+        userId,
       },
     });
     if (!comment) {
@@ -85,4 +127,4 @@ const deleteComment = async (req, res) => {
   }
 };
 
-module.exports = { addComment, getComments, deleteComment };
+module.exports = { addComment, getComments, updateComment, deleteComment };

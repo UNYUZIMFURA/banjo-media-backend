@@ -64,7 +64,7 @@ const deletePost = async (req, res) => {
       },
     });
     if (!post) {
-      return res.status(400).json({
+      return res.status(404).json({
         success: false,
         message: "No post found",
       });

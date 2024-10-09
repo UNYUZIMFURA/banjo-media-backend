@@ -5,7 +5,7 @@ const {
   deleteComment,
   updateComment,
 } = require("../controllers/comments.controller");
-const { verifyToken } = require("../middlewares/verifyToken");
+const { verifyToken } = require("../middlewares/auth.middleware");
 const router = express.Router();
 
 router.get("/comments", getComments);

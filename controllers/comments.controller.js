@@ -39,16 +39,20 @@ const addComment = async (req, res) => {
   }
 };
 
-const getComments = async(req,res) => {
-    try{
-        const comments = await prisma.comment.findMany()
-         return res.status(200).json({
-            success: true,
-            message: "Comments fetched"
-         })
-    } catch(err) {
+const getComments = async (req, res) => {
+  try {
+    const comments = await prisma.comment.findMany();
+    return res.status(200).json({
+      success: true,
+      message: "Comments fetched",
+      comments
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch comments",
+    });
+  }
+};
 
-    }    
-}
-
-module.exports = { addComment };
+module.exports = { addComment, getComments };

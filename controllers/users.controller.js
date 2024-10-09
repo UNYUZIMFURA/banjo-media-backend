@@ -61,6 +61,7 @@ const getUsers = async (req, res) => {
     const users = await prisma.user.findMany({
       include: {
         posts: true,
+        comments: true,
       },
     });
     return res.status(200).json({

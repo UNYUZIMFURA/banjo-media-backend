@@ -7,7 +7,7 @@ const verifyToken = async (req, res, next) => {
   if (token == null)
     return res.status(401).json({
       success: false,
-      message: "Token not found!",
+      message: "Unauthorized, login!",
     });
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {

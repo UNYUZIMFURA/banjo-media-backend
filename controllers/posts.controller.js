@@ -5,13 +5,6 @@ const createPost = async (req, res) => {
   const { content } = req.body;
   const userId = req.user.id;
 
-  if (!userId) {
-    return res.status(400).json({
-      success: false,
-      message: "Missing user Id",
-    });
-  }
-
   if (!content) {
     return res.status(400).json({
       success: false,
@@ -42,7 +35,11 @@ const createPost = async (req, res) => {
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      include: {
+        comments: true
+      }
+    });
     return res.status(200).json({
       success: true,
       message: "Posts fetched",

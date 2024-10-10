@@ -1,5 +1,5 @@
-# Social Media Backend(Banjo Media)
-- A Full-Featured backend for a social media application in Nodejs
+# Social Media Backend
+- A Fully-Featured backend for a social media application in Nodejs
 
 # Features
 - User Authentication(Login,Signup)
@@ -16,8 +16,8 @@
 Consider adding these Environment Variables to your .env file to enable your application to run smoothly
 
 - DATABASE_URL="Enter your MongoDB URL"
-- JWT_SECRET="Enter a phrase/word to be used by JWT while generating tokens"
-- AUTH_EMAIL="Enter the E-mail that will be used to sent email to users"
+- JWT_SECRET="Enter a secret key to be used by JWT while generating tokens"
+- AUTH_EMAIL="Enter the E-mail that will be used to sent emails to users"
 - AUTH_PASSWORD="Enter the App Password for your Email"
 
 

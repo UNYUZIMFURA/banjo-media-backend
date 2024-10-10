@@ -1,7 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt");
 const { generateOtp } = require("../utils/generateOtp");
 
 const sendOtpToEmail = async (email, res, user) => {
@@ -16,7 +15,7 @@ const sendOtpToEmail = async (email, res, user) => {
     });
 
     const mailOptions = {
-      from: `process.env.AUTH_EMAIL`,
+      from: process.env.AUTH_EMAIL,
       to: email,
       subject: "Banjo Media OTP Code",
       text: `Your OTP code is: ${otp}`,

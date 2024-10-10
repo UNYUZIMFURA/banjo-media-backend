@@ -38,18 +38,6 @@ const createUser = async (req, res) => {
     });
 
     await sendOtpToEmail(email, res, user);
-
-    // const token = jwt.sign(
-    //   { id: user.id, email: user.email },
-    //   process.env.JWT_SECRET
-    // );
-
-    // return res.status(200).json({
-    //   success: true,
-    //   message: "User Created!",
-    //   user,
-    //   token,
-    // });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -111,17 +99,30 @@ const verifyOtp = async (req, res) => {
       },
     });
 
-    if(!originalOtp) {
+    if (!originalOtp) {
       return res.status(404).json({
         success: false,
-        message: "The user didn't receive an OTP code"
-      })
+        message: "The user didn't receive an OTP code",
+      });
     }
 
+    const user = await prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+
     if (originalOtp.otp === otp) {
+      const token = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.JWT_SECRET
+      );
+
       return res.status(200).json({
         success: true,
         message: "Email successfully verified",
+        user,
+        token,
       });
     } else {
       return res.status(400).json({
@@ -130,7 +131,7 @@ const verifyOtp = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error verifying otp",

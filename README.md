@@ -15,8 +15,8 @@ Consider adding these Environment Variables to your .env file to enable your app
 - JWT_SECRET="Enter a phrase/word to be used by JWT while generating tokens"
 - AUTH_EMAIL="Enter the E-mail that will be used to sent email to users"
 - AUTH_PASSWORD="Enter the App Password for your Email"
-** For the Email to be used by Nodemailer to send emails you need to first enable 2FA(Two-Factor Authentication on it) **
-** For the password you need to generate an "App Password", they provide a 16-characters password for you to use **
+- ** For the Email to be used by Nodemailer to send emails you need to first enable 2FA(Two-Factor Authentication on it) **
+- ** For the password you need to generate an "App Password", they provide a 16-characters password for you to use **
 
 
 # Technologies & Tools

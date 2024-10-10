@@ -25,5 +25,6 @@ Consider adding these Environment Variables to your .env file to enable your app
 - Nodejs
 - Expressjs
 - MongoDB
+- Prisma(Object Relational Mapping)
 - JWT(Managing user tokens)
 - Nodemon(Instant server refresh)

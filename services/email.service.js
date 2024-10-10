@@ -32,6 +32,7 @@ const sendOtpToEmail = async (email, res, user) => {
     transporter.sendMail(mailOptions);
     return res.status(200).json({
       success: true,
+      id: user.id,
       message: "Verification code sent to your Email!",
     });
   } catch (err) {

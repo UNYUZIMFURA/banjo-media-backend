@@ -7,6 +7,8 @@ const usersRoutes = require("./routes/users.routes");
 const postsRoutes = require("./routes/posts.routes");
 const commentsRoutes = require("./routes/comments.routes")
 const followRoutes = require("./routes/follow.routes")
+const likesRoutes = require("./routes/likes.routes")
+
 const helmet = require("helmet");
 require("dotenv").config();
 dotenv.config({ path: "./env" });
@@ -16,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use("/api/v1", usersRoutes, postsRoutes, commentsRoutes, followRoutes);
+app.use("/api/v1", usersRoutes, postsRoutes, commentsRoutes, followRoutes, likesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`.cyan.bold);

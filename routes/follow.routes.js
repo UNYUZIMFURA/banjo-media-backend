@@ -4,6 +4,6 @@ const { followUser, unfollowUser } = require("../controllers/follow.controller")
 const router = express.Router()
 
 router.post("/follow/:id", verifyToken, followUser)
-router.post("/unfollow/:id", verifyToken, unfollowUser)
+router.delete("/unfollow/:id", verifyToken, unfollowUser)
 
 module.exports = router

@@ -29,6 +29,7 @@ const createPost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error creating user",
+      err
     });
   }
 };
@@ -38,6 +39,7 @@ const getPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       include: {
         comments: true,
+        likes: true
       },
     });
     return res.status(200).json({
@@ -46,9 +48,11 @@ const getPosts = async (req, res) => {
       posts,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Error fetching posts",
+      err
     });
   }
 };
@@ -85,9 +89,11 @@ const updatePost = async (req, res) => {
       updatedPost,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Error updating post",
+      err
     });
   }
 };
@@ -120,6 +126,7 @@ const deletePost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error deleting post",
+      err
     });
   }
 };

@@ -8,12 +8,14 @@ datasource db {
 }
 
 model User {
-    id       String    @id @default(auto()) @map("_id") @db.ObjectId
-    username String    @unique
-    email    String    @unique
-    password String
-    posts    Post[]
-    comments Comment[]
+    id        String      @id @default(auto()) @map("_id") @db.ObjectId
+    username  String      @unique
+    email     String      @unique
+    password  String
+    posts     Post[]
+    comments  Comment[]
+    followers Follower[]  @relation("Followers")
+    following Follower[]  @relation("Following")
 }
 
 model Post {
@@ -27,21 +29,29 @@ model Post {
 }
 
 model Comment {
-    id         String   @id @default(auto()) @map("_id") @db.ObjectId
-    content    String
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId     String   @db.ObjectId
-    post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId     String   @db.ObjectId
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    content   String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String   @db.ObjectId
+    post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId    String   @db.ObjectId
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Otp {
-    id String @id @default(auto()) @map("_id") @db.ObjectId
-    userId String
-    otp String
-    expires String
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String
+    otp       String
+    expires   String
     createdAt DateTime @default(now())
-    expiresAt DateTime 
- }
+    expiresAt DateTime
+}
+
+model Follower {
+    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    followerId  String @db.ObjectId 
+    followingId String @db.ObjectId 
+    follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+    following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+}

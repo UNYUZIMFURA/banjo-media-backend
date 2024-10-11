@@ -53,6 +53,7 @@ const getUsers = async (req, res) => {
       include: {
         posts: true,
         comments: true,
+        followers: true,
       },
     });
     return res.status(200).json({

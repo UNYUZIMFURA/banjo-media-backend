@@ -25,7 +25,7 @@ const sendOtpToEmail = async (email, res, user) => {
         data: {
             userId: user.id,
             otp,
-            expires: Date.now + 3600000
+            expiresAt: Date.now + 3600000
         }
     })
 

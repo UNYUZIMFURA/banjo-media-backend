@@ -20,7 +20,6 @@ const createUser = async (req, res) => {
       },
     });
 
-    // Check if an account with provided e-mail already exists
     if (userExists) {
       return res.status(400).json({
         success: false,

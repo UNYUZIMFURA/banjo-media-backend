@@ -13,14 +13,14 @@ const likePost = async (req, res) => {
   }
 
   try {
-    const isLikeExisting = await prisma.like.findFirst({
+    const isAlreadyLiked = await prisma.like.findFirst({
       where: {
         userId,
         postId,
       },
     });
 
-    if (isLikeExisting) {
+    if (isAlreadyLiked) {
       return res.status(400).json({
         success: false,
         message: "Already liked the post",

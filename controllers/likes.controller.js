@@ -59,6 +59,7 @@ const likePost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error liking post",
+      err
     });
   }
 };
@@ -101,6 +102,7 @@ const unlikePost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error unliking post",
+      err
     });
   }
 };

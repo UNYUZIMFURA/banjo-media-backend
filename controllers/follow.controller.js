@@ -32,6 +32,7 @@ const followUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error following user",
+      err
     });
   }
 };
@@ -63,6 +64,7 @@ const unfollowUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error unfollowing user",
+      err
     });
   }
 };

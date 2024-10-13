@@ -42,6 +42,7 @@ const createUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error creating user",
+      err
     });
   }
 };
@@ -61,6 +62,7 @@ const getUsers = async (req, res) => {
       users,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Error fetching users",
@@ -78,6 +80,7 @@ const deleteUsers = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error creating user",
+      err
     });
   }
 };
@@ -135,6 +138,7 @@ const verifyOtp = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error verifying otp",
+      err
     });
   }
 };

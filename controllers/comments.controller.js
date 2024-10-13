@@ -33,9 +33,11 @@ const addComment = async (req, res) => {
       comment,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Failed to add comment",
+      err
     });
   }
 };
@@ -49,9 +51,11 @@ const getComments = async (req, res) => {
       comments,
     });
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Failed to fetch comments",
+      err
     });
   }
 };
@@ -93,6 +97,7 @@ const updateComment = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error updating comment",
+      err
     });
   }
 };
@@ -120,9 +125,11 @@ const deleteComment = async (req, res) => {
     });
     return res.status(204).json({});
   } catch (err) {
+    console.log(err)
     return res.status(500).json({
       success: false,
       message: "Failed to delete comment",
+      err
     });
   }
 };

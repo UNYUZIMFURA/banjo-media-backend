@@ -49,7 +49,7 @@ const login = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error logging in",
-      err
+      err,
     });
   }
 };

@@ -22,12 +22,12 @@ const sendOtpToEmail = async (email, res, user) => {
     };
 
     await prisma.otp.create({
-        data: {
-            userId: user.id,
-            otp,
-            expiresAt: Date.now + 3600000
-        }
-    })
+      data: {
+        userId: user.id,
+        otp,
+        expiresAt: Date.now + 3600000,
+      },
+    });
 
     transporter.sendMail(mailOptions);
     return res.status(200).json({

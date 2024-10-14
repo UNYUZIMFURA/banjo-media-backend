@@ -27,17 +27,18 @@ const addComment = async (req, res) => {
         userId,
       },
     });
+
     return res.status(200).json({
       success: true,
       message: "Comment added!",
       comment,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Failed to add comment",
-      err
+      err,
     });
   }
 };
@@ -51,11 +52,11 @@ const getComments = async (req, res) => {
       comments,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Failed to fetch comments",
-      err
+      err,
     });
   }
 };
@@ -64,6 +65,7 @@ const updateComment = async (req, res) => {
   const id = req.params.id;
   const userId = req.user.id;
   const { content } = req.body;
+
   try {
     const comment = await prisma.comment.findFirst({
       where: {
@@ -71,6 +73,7 @@ const updateComment = async (req, res) => {
         userId,
       },
     });
+    
     if (!comment) {
       return res.status(404).json({
         success: false,
@@ -87,6 +90,7 @@ const updateComment = async (req, res) => {
         content,
       },
     });
+
     return res.status(200).json({
       success: true,
       message: "Updated the comment",
@@ -97,7 +101,7 @@ const updateComment = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error updating comment",
-      err
+      err,
     });
   }
 };
@@ -105,6 +109,7 @@ const updateComment = async (req, res) => {
 const deleteComment = async (req, res) => {
   const id = req.params.id;
   const userId = req.user.id;
+
   try {
     const comment = await prisma.comment.findFirst({
       where: {
@@ -112,12 +117,14 @@ const deleteComment = async (req, res) => {
         userId,
       },
     });
+
     if (!comment) {
       return res.status(400).json({
         success: false,
         message: "No comment found",
       });
     }
+
     await prisma.comment.delete({
       where: {
         id,
@@ -125,11 +132,11 @@ const deleteComment = async (req, res) => {
     });
     return res.status(204).json({});
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Failed to delete comment",
-      err
+      err,
     });
   }
 };

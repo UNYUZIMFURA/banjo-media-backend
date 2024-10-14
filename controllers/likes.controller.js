@@ -35,18 +35,18 @@ const likePost = async (req, res) => {
     });
 
     const post = await prisma.post.findFirst({
-        where: {
-            id: postId
-        }
-    }
-    )
-    console.log(post)
+      where: {
+        id: postId,
+      },
+    });
 
     await prisma.post.update({
       where: { id: postId },
-      data: { likesCount: {
-        increment: 1
-      } },
+      data: {
+        likesCount: {
+          increment: 1,
+        },
+      },
     });
 
     return res.status(200).json({
@@ -59,14 +59,15 @@ const likePost = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error liking post",
-      err
+      err,
     });
   }
 };
 
 const unlikePost = async (req, res) => {
   const userId = req.user.id;
-  const postId  = req.params.id;
+  const postId = req.params.id;
+
   try {
     const like = await prisma.like.findFirst({
       where: {
@@ -89,20 +90,21 @@ const unlikePost = async (req, res) => {
     });
 
     await prisma.post.update({
-        where: { id: postId },
-        data: { likesCount: {
-          decrement: 1
-        } },
-      });
-  
-    
+      where: { id: postId },
+      data: {
+        likesCount: {
+          decrement: 1,
+        },
+      },
+    });
+
     return res.status(204).json({});
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error unliking post",
-      err
+      err,
     });
   }
 };

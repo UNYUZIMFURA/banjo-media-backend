@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 const followUser = async (req, res) => {
   const userId = req.user.id;
   const followId = req.params.id;
+
   try {
     const existingFollow = await prisma.follower.findFirst({
       where: {
@@ -32,7 +33,7 @@ const followUser = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error following user",
-      err
+      err,
     });
   }
 };
@@ -40,31 +41,34 @@ const followUser = async (req, res) => {
 const unfollowUser = async (req, res) => {
   const userId = req.user.id;
   const followingId = req.params.id;
+
   try {
     const existingFollow = await prisma.follower.findFirst({
-        where: {
-            followerId: userId,
-            followingId
-        }
-    })
-    if(!existingFollow) {
-        return res.status(400).json({
-            success: false,
-            message: "You don't follow this user"
-        })
+      where: {
+        followerId: userId,
+        followingId,
+      },
+    });
+
+    if (!existingFollow) {
+      return res.status(400).json({
+        success: false,
+        message: "You don't follow this user",
+      });
     }
+    
     await prisma.follower.delete({
-        where: {
-            id: existingFollow.id
-        }
-    })
-    return res.status(204).json({})
+      where: {
+        id: existingFollow.id,
+      },
+    });
+    return res.status(204).json({});
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error unfollowing user",
-      err
+      err,
     });
   }
 };

@@ -12,6 +12,9 @@ model User {
     username  String     @unique
     email     String     @unique
     password  String
+    verified  Boolean    @default(false)
+    resetPasswordFlag Boolean    @default(false)
+    codes     Code?
     posts     Post[]
     comments  Comment[]
     likes     Like[]     @relation("UserLikes")
@@ -42,13 +45,13 @@ model Comment {
     updatedAt DateTime @updatedAt
 }
 
-model Otp {
+model Code {
     id        String   @id @default(auto()) @map("_id") @db.ObjectId
-    userId    String
-    otp       String
-    expires   String
-    createdAt DateTime @default(now())
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String   @unique @db.ObjectId
+    code       String
     expiresAt DateTime
+    createdAt DateTime @default(now())
 }
 
 model Follower {

@@ -1,11 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const nodemailer = require("nodemailer");
-const { generateOtp } = require("../utils/generateOtp");
+const { generateCode } = require("../utils/generateCode");
 
-const sendOtpToEmail = async (email, res, user) => {
+const sendCodeToEmail = async (email, res, user) => {
   try {
-    const otp = await generateOtp();
+    const code = await generateCode();
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       auth: {
@@ -17,18 +17,21 @@ const sendOtpToEmail = async (email, res, user) => {
     const mailOptions = {
       from: process.env.AUTH_EMAIL,
       to: email,
-      subject: "Banjo Media OTP Code",
-      text: `Your OTP code is: ${otp}`,
+      subject: "Banjo Media Code",
+      text: `Your code is: ${code}`,
     };
 
-    await prisma.otp.create({
+    const expiresAt = new Date(Date.now() + 3600000);
+
+    await prisma.code.create({
       data: {
         userId: user.id,
-        otp,
-        expiresAt: Date.now + 3600000,
+        code,
+        expiresAt
       },
     });
 
+    
     transporter.sendMail(mailOptions);
     return res.status(200).json({
       success: true,
@@ -39,9 +42,9 @@ const sendOtpToEmail = async (email, res, user) => {
     console.log(err);
     return res.status(500).json({
       success: false,
-      message: "Error sending OTP to email",
+      message: "Error sending code to email",
     });
   }
 };
 
-module.exports = { sendOtpToEmail };
+module.exports = { sendCodeToEmail };

@@ -1,8 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const { sendOtpToEmail } = require("../services/email.service");
+const { sendCodeToEmail } = require("../services/email.service");
 
 const createUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -36,13 +35,13 @@ const createUser = async (req, res) => {
       },
     });
 
-    await sendOtpToEmail(email, res, user);
+    await sendCodeToEmail(email, res, user);
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error creating user",
-      err
+      err,
     });
   }
 };
@@ -63,7 +62,7 @@ const getUsers = async (req, res) => {
       users,
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return res.status(500).json({
       success: false,
       message: "Error fetching users",
@@ -81,67 +80,70 @@ const deleteUsers = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error creating user",
-      err
+      err,
     });
   }
 };
 
-const verifyOtp = async (req, res) => {
-  let { userId, otp } = req.body;
+const resetPassword = async (req, res) => {
+  const { password, userId } = req.body;
 
-  if (!otp) {
+  if (!password || !userId) {
     return res.status(400).json({
       success: false,
-      message: "Please provide OTP code",
+      message: "Enter your new password and userId",
     });
   }
 
   try {
-    const originalOtp = await prisma.otp.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
-        userId,
-      },
-    });
+        id: userId
+      }
+    })
 
-    if (!originalOtp) {
-      return res.status(404).json({
+    if(!user) {
+      return res.status(400).json({
         success: false,
-        message: "The user didn't receive an OTP code",
-      });
+        message: "User not found!"
+      })
     }
 
-    const user = await prisma.user.findFirst({
+    if(!user.resetPasswordFlag) {
+       return res.status(401).json({
+        success: false,
+        message: "Verify your email first!"
+       })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await prisma.user.update({
       where: {
         id: userId,
       },
+      data: {
+        password: hashedPassword
+      },
     });
 
-    if (originalOtp.otp === otp) {
-      const token = jwt.sign(
-        { id: user.id, email: user.email },
-        process.env.JWT_SECRET
-      );
-
-      return res.status(200).json({
-        success: true,
-        message: "Email successfully verified",
-        user,
-        token,
-      });
-    } else {
-      return res.status(400).json({
-        success: false,
-        message: "Incorrect verification code",
-      });
-    }
+    return res.status(200).json({
+      success: true,
+      message: "Updated your password!",
+    });
   } catch (err) {
-    console.log(err);
+    console.log(err)
     return res.status(500).json({
       success: false,
-      message: "Error verifying otp",
+      message: "Error resetting password",
       err
     });
   }
 };
 
-module.exports = { createUser, getUsers, deleteUsers, verifyOtp };
+module.exports = {
+  createUser,
+  getUsers,
+  deleteUsers,
+  resetPassword,
+};

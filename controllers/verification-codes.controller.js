@@ -19,6 +19,7 @@ const verifyCode = async (req, res) => {
         userId,
       },
     });
+    console.log(originalCode)
 
     if (!originalCode) {
       return res.status(404).json({
@@ -34,7 +35,7 @@ const verifyCode = async (req, res) => {
     });
 
     if (originalCode.code === code) {
-      console.log(originalCode.code, code)
+      // It's the user's first time creating account and the verified is originally set to false
       if (!user.verified) {
         const verifiedUser = await prisma.user.update({
           where: {
@@ -64,14 +65,23 @@ const verifyCode = async (req, res) => {
         });
       }
 
+      // The user already has an account and is verifying the code again through reset password
       const verifiedUser = await prisma.user.update({
         where: {
           id: user.id,
         },
         data: {
+          // Enabling the user to be able to reset Password
           resetPasswordFlag: true,
         },
       });
+
+      await prisma.code.delete({
+        where: {
+          id: originalCode.id
+        }
+      })
+
       return res.status(200).json({
         success: true,
         message: "Email successfully verified",
@@ -128,6 +138,7 @@ const deleteVerificationCodes = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Error deleting verification codes",
+      err
     });
   }
 };

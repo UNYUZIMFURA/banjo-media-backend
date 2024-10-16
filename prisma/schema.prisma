@@ -14,7 +14,7 @@ model User {
     password  String
     verified  Boolean    @default(false)
     resetPasswordFlag Boolean    @default(false)
-    codes     Code?
+    code     Code?
     posts     Post[]
     comments  Comment[]
     likes     Like[]     @relation("UserLikes")
